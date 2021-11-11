@@ -1,0 +1,8 @@
+.data
+	msg:.asciiz "Ola Mundo!\n"
+
+.text # diretiva de texto
+main:
+	li $v0, 4 #prepara o reg para imprimir uma string
+	la $a0, msg # lê o endereço de memória onde o texto esta e coloca dentro do reg a0
+	syscall #executa

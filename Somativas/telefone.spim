@@ -1,0 +1,83 @@
+.data
+  numero: .space 256 # alocar 256 bytes
+
+.text
+
+  main:
+    li $v0, 8 # ler string
+    la $a0, numero
+    li $a1, 256
+
+    move $t0, $a0 # salvar string em t0
+    syscall
+
+    li $t1,50  #salvar '2'
+    li $t2,51  #salvar '3'
+    li $t3,52  #salvar '4'
+    li $t4,53  #salvar '5'
+    li $t5,54  #salvar '6'
+    li $t6,55  #salvar '7'
+    li $t7,56  #salvar '8'
+    li $t8,57  #salvar '9'
+
+  verificar:
+    lb $a0, ($t0)
+    beq $a0,0, encerrar
+    bge, $a0, 64, comparador #se caracter for maior ou igual a 64 vai para "comparar"
+    j proximo
+
+  comparador:
+    ble $a0, 67, dois
+    ble $a0, 70, tres
+    ble $a0, 73, quatro
+    ble $a0, 76, cinco
+    ble $a0, 79, seis
+    ble $a0, 83, sete
+    ble $a0, 86, oito
+    ble $a0, 90, nove
+    j proximo
+
+  dois:
+    sb $t1, ($t0) #muda o caracter para '2'
+    j proximo
+  
+  tres:
+    sb $t2, ($t0) #muda o caracter para '3'
+    j proximo
+  
+  quatro:
+    sb $t3, ($t0) #muda o caracter para '4'
+    j proximo
+
+  cinco:
+    sb $t4, ($t0) #muda o caracter para '5'
+    j proximo
+
+  seis:
+    sb $t5, ($t0) #muda o caracter para '6'
+    j proximo
+
+  sete:
+    sb $t6, ($t0) #muda o caracter para '7'
+    j proximo
+  
+  oito:
+    sb $t7, ($t0) #muda o caracter para '8'
+    j proximo
+
+  nove:
+    sb $t8, ($t0) #muda o caracter para '9'
+    j proximo
+  
+  proximo:
+    add $t0, $t0, 1 #proximo caracter da string
+    j verificar
+  
+  encerrar:
+    la $a0, numero
+    li, $v0, 4 #imprimir string
+    syscall
+
+end:
+    li $v0, 10  # Encerra o programa
+    syscall

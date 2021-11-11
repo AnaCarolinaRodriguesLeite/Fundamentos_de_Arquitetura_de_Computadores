@@ -1,0 +1,161 @@
+.data
+
+    ADD:.asciiz "ADD: "
+    SUB:.asciiz "SUB: "
+    AND:.asciiz "AND: "
+    OR:.asciiz "OR: "
+    XOR:.asciiz "XOR: "
+    MASK:.asciiz "MASK: "
+    SLL:.asciiz "SLL("
+    SRL:.asciiz "SRL("
+	fp:.asciiz "): "
+	pulaLinha:.asciiz "\n"
+
+.text
+main:
+	
+	li $v0, 5
+	syscall 
+	
+	move $t1,$v0 		#A
+	
+	li $v0,5
+	syscall 
+	
+	move $t2,$v0 		#B
+	
+	li $v0, 5
+	syscall 
+	
+	move $t3,$v0 		#C
+
+    add $t4,$t1,$t2
+
+    sub $t5,$t1,$t2
+
+    and $t6,$t1,$t2
+
+    or $t7,$t1,$t2
+
+    xor $s0,$t1,$t2
+
+	and $s1,$t3,31
+
+	sllv $s2,$t1,$s1
+
+	srlv $s3,$t2,$s1
+
+    li $v0,4 			#printando add
+	la $a0,ADD
+	syscall
+	
+	li $v0,1			#printando resultado
+	move $a0,$t4
+	syscall
+
+	li $v0,4 			#printando '\n'
+	la $a0,pulaLinha
+	syscall
+
+    li $v0,4
+	la $a0,SUB
+	syscall
+	
+	li $v0,1
+	move $a0,$t5
+	syscall
+
+	li $v0,4 			#printando '\n'
+	la $a0,pulaLinha
+	syscall
+
+    li $v0,4
+	la $a0,AND
+	syscall
+	
+	li $v0,1
+	move $a0,$t6
+	syscall
+
+	li $v0,4 			#printando '\n'
+	la $a0,pulaLinha
+	syscall
+
+    li $v0,4
+	la $a0,OR
+	syscall
+	
+	li $v0,1
+	move $a0,$t7
+	syscall
+
+	li $v0,4 			#printando '\n'
+	la $a0,pulaLinha
+	syscall
+
+    li $v0,4
+	la $a0,XOR
+	syscall
+	
+	li $v0,1
+	move $a0,$s0
+	syscall
+
+	li $v0,4 			#printando '\n'
+	la $a0,pulaLinha
+	syscall
+
+	li $v0,4
+	la $a0,MASK
+	syscall
+	
+	li $v0,1
+	move $a0,$s1
+	syscall
+
+	li $v0,4 			#printando '\n'
+	la $a0,pulaLinha
+	syscall
+
+	li $v0,4
+	la $a0,SLL
+	syscall
+	
+	li $v0,1
+	move $a0,$s1
+	syscall
+
+	li $v0,4
+	la $a0,fp
+	syscall
+
+	li $v0,1
+	move $a0,$s2
+	syscall
+
+	li $v0,4 			#printando '\n'
+	la $a0,pulaLinha
+	syscall
+
+	li $v0,4
+	la $a0,SRL
+	syscall
+	
+	li $v0,1
+	move $a0,$s1
+	syscall
+
+	li $v0,4
+	la $a0,fp
+	syscall
+
+	li $v0,1
+	move $a0,$s3
+	syscall
+
+	li $v0,4 			#printando '\n'
+	la $a0,pulaLinha
+	syscall
+
+	li $v0,10
+	syscall

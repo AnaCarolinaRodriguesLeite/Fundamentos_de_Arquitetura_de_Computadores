@@ -1,0 +1,59 @@
+.data
+        numero_primo:   .asciiz " sim"
+        numero_n_primo: .asciiz " não"
+        numero_n_inteiro: .asciiz " Entrada invalida"
+.text 
+	j MAIN
+	
+VERIFICAR_SE_NUMERO_E_PRIMO:
+	addi $t0,$zero,2 # fator = 2
+	
+	#verifica se valor é menor que 2, caso for, não é primo 
+	slt $t1,$a0,$t0 # se valor < 2, t1 = 1, senao t1 = 0
+	bne $t1,$zero,NUMERO_N_PRIMO_VERIFICAR_SE_NUMERO_E_PRIMO #se valor é igual a 1, desvia para NUMERO_N_PRIMO_VERIFICAR_SE_NUMERO_E_PRIMO
+	
+	srl $t1,$a0,1 # desloca 1 posicao, mesmo que o quociente de argumento/2
+	addi $t1,$t1,1 # t1++, incrementa para fator <= quociente_da_divisao
+	
+LOOP_VERIFICAR_SE_NUMERO_E_PRIMO:
+	slt $t2,$t0,$t1 # se fator < quociente da divisao, t2 = 1, senao t2 = 0
+	beq $t2,$zero,FIM_VERIFICAR_SE_NUMERO_E_PRIMO # se t2 = 0, desvia para informar que o numero é primo
+	
+	div $a0,$t0 # divide valor por fator
+	mfhi $t2 #t2 = resto da divisao
+	beq $t2,$zero,NUMERO_N_PRIMO_VERIFICAR_SE_NUMERO_E_PRIMO # se t2 = 0, descvia para informar que o número não é primo
+	
+	addi $t0,$t0,1 # fator++
+	j LOOP_VERIFICAR_SE_NUMERO_E_PRIMO
+	
+NUMERO_N_PRIMO_VERIFICAR_SE_NUMERO_E_PRIMO:
+	addi $v0,$zero,1 #v0 = não é primo
+	addi $v1,$t0,0 # v1 = fator_final
+	j SAIDA_VERIFICAR_SE_NUMERO_E_PRIMO
+FIM_VERIFICAR_SE_NUMERO_E_PRIMO:
+	addi $v0,$zero,0 #v0 = primo
+SAIDA_VERIFICAR_SE_NUMERO_E_PRIMO:
+	jr $ra
+	
+MAIN:
+	# Verificando se um numero é primo
+	
+	addi $a0,$s0,0 # argumento(0) = s0
+	
+	jal VERIFICAR_SE_NUMERO_E_PRIMO #retorna v0 primo ou nao primo e para caso de nao primo o valor dividido
+	
+	addi $s1,$v0,0 # s1 = v0
+	li $v0,1 # código para printar inteiro
+	
+	syscall #faz uma chamada com valor em v0
+	
+	#Caso v0 = 0, número é primo, caso contrário, número não é primo
+	bne $s1,$zero,NUMERO_N_PRIMO #se $s1 = 0, não desvia para numero primo
+	la $a0,numero_primo
+	j PRINT
+	
+NUMERO_N_PRIMO:
+	la $a0,numero_n_primo
+PRINT:
+	li $v0,4 #codigo para printar string
+	syscall  #faz uma chamada com valor em v0
